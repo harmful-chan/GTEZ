@@ -11,3 +11,30 @@ target
 .factorypath
 .apt_generated
 .apt_generated_tests
+
+wimoor-ui/.DS_Store
+wimoor-ui/dist
+
+
+# local env files
+wimoor-ui/.env.local
+wimoor-ui/.env.*.local
+
+# Log files
+wimoor-ui/npm-debug.log*
+wimoor-ui/yarn-debug.log*
+wimoor-ui/yarn-error.log*
+wimoor-ui/pnpm-debug.log*
+
+
+
+# Editor directories and files
+wimoor-ui/.idea
+wimoor-ui/.vscode
+wimoor-ui/*.suo
+wimoor-ui/*.ntvs*
+wimoor-ui/*.njsproj
+wimoor-ui/*.sln
+wimoor-ui/*.sw?
+wimoor-ui/node_modules/.cache/
+wimoor-ui/src/views/customized/
