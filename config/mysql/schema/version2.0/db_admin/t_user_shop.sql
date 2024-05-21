@@ -1,0 +1,2 @@
+USE `db_admin`;
+INSERT INTO `t_user_shop` (`id`, `user_id`, `shop_id`) VALUES (26138972975989613, 26138972975759242, 26138972975530053);

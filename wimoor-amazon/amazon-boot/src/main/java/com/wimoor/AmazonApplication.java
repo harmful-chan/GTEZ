@@ -19,7 +19,7 @@ import com.wimoor.util.SpringUtil;
 @EnableScheduling
 @ComponentScan
 @EnableTransactionManagement
-public class AmazonApplication { 
+public class AmazonApplication {
 
     public static void main(String[] args) {
     	ConfigurableApplicationContext context = SpringApplication.run(AmazonApplication.class, args);

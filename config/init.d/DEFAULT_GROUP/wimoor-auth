@@ -1,0 +1,27 @@
+feign: 
+  client: 
+    config: 
+      default: 
+        connectTimeout: 10000
+        readTimeout: 600000
+
+config: 
+  websit: http://localhost:8084
+  ui-server: http://localhost:8084
+  authority-server: http://localhost:8087/auth
+  cas-server: http://localhost:8080
+  cas-filter-url-pattern: /shiro-cas
+
+ 
+wechat:
+  small-app-id: wx5f4h2db789123f45
+  small-app-secret: 1a23b4c5defgh6778ijkl91mn23fabf4
+  open-app-id: wx1a2b3c4d56791e2f
+  open-app-secret: 1234ba567b8c9de12fg3h45ijkl6mn78a
+  mch-id: 1234567890
+  key: Wimoor12345678abcd902efghigj
+  templateurl: https://api.weixin.qq.com/cgi-bin/message/template/send
+
+feishu:
+  app-id: cli_a1b2c34d5678e90f
+  app-secret: AbCDE1f2gHiJKh3hABcdEfghHiJKwZ5s

@@ -1,0 +1,182 @@
+version: '3'
+
+services:
+  wimoor-mysql:
+    image: wimoor-mysql
+    container_name: wimoor-mysql
+    build:
+      context: config/mysql
+      dockerfile: Dockerfile
+      args:
+        AUTHORS: ${AUTHORS}
+    ports:
+      - 3306:3306
+    volumes:
+      - ${BASE_DIR}/wimoor/mysql:/var/lib/mysql
+    #  - ./config/mysql/my.cnf:/etc/my.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - network
+
+  wimoor-nacos:
+    image: nacos/nacos-server:v2.3.0
+    container_name: wimoor-nacos
+    env_file:
+      - wimoor-nacos.env
+    volumes:
+      - ${BASE_DIR}/wimoor/nacos/logs:/home/nacos/logs
+      - ./config/nacos/application.properties:/home/nacos/conf/application.properties
+      - ./config/nacos/init.d:/home/nacos/init.d
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    depends_on:
+      wimoor-mysql:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - network
+
+  wimoor-seata:
+    image: seataio/seata-server:1.4.2
+    container_name: wimoor-seata
+    volumes:
+      - ./config/seata/registry.conf:/seata-server/resources/registry.conf
+    ports:
+      - "7091:7091"
+      - "8091:8091"
+    depends_on:
+      - wimoor-nacos
+      - wimoor-mysql
+    networks:
+      - network
+
+  wimoor-redis:
+    image: redis:6.2
+    container_name: wimoor-redis
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - ${BASE_DIR}/wimoor/redis/data:/data
+      - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ${BASE_DIR}/wimoor/redis/logs:/logs
+    #配置文件启动
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - network
+
+  wimoor-gateway:
+    image: wimoor-gateway
+    container_name: wimoor-gateway
+    environment:
+      - WIMOOR_NACOS_HOST=wimoor-nacos
+    ports:
+      - 8099:8099
+      - 5099:5099
+    depends_on:
+      - wimoor-nacos
+    networks:
+      - network
+
+  wimoor-amazon:
+    image: wimoor-amazon
+    container_name: wimoor-amazon
+    environment:
+      - WIMOOR_NACOS_HOST=wimoor-nacos
+      - WIMOOR_SEATA_HOST=wimoor-seata
+    ports:
+      - 8093:8093
+      - 5093:5093
+    depends_on:
+      - wimoor-nacos
+      - wimoor-seata
+      - wimoor-gateway
+    networks:
+      - network
+
+  wimoor-erp:
+    image: wimoor-erp
+    container_name: wimoor-erp
+    environment:
+      - WIMOOR_NACOS_HOST=wimoor-nacos
+      - WIMOOR_SEATA_HOST=wimoor-seata
+    ports:
+      - 8086:8086
+      - 5086:5086
+    depends_on:
+      - wimoor-nacos
+      - wimoor-seata
+      - wimoor-gateway
+    networks:
+      - network
+
+  wimoor-amazon-adv:
+    image: wimoor-amazon-adv
+    container_name: wimoor-amazon-adv
+    environment:
+      - WIMOOR_NACOS_HOST=wimoor-nacos
+    ports:
+      - 8092:8092
+      - 5092:5092
+    depends_on:
+      - wimoor-nacos
+      - wimoor-gateway
+    networks:
+      - network
+
+  wimoor-auth:
+    image: wimoor-auth
+    container_name: wimoor-auth
+    environment:
+      - WIMOOR_NACOS_HOST=wimoor-nacos
+    ports:
+      - 8087:8087
+      - 5087:5087
+    depends_on:
+      - wimoor-nacos
+      - wimoor-gateway
+    networks:
+      - network
+
+  wimoor-admin:
+    image: wimoor-admin
+    container_name: wimoor-admin
+    environment:
+      - WIMOOR_NACOS_HOST=wimoor-nacos
+      - WIMOOR_REDIS_HOST=wimoor-redis
+      - WIMOOR_MYSQL_HOST=wimoor-mysql
+    ports:
+      - 8085:8085
+      - 5085:5085
+    depends_on:
+      - wimoor-nacos
+      - wimoor-redis
+      - wimoor-gateway
+    networks:
+      - network
+
+#  wimoor-init:
+#    image: centos:7.9.2009
+#    container_name: wimoor-init
+#    volumes:
+#      - ./config/init.d:/init.d
+#    environment:
+#      - NACOS_SERVICE_HOST=wimoor-nacos
+#      - NACOS_SERVICE_PORT=8848
+#    command: ["/bin/bash","-c", "/init.d/nacos-init.sh"]
+#    depends_on:
+#      - wimoor-nacos
+#      - wimoor-mysql
+#    networks:
+#      - network
+
+networks:
+  network:
+    driver: bridge

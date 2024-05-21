@@ -36,5 +36,5 @@ wimoor-ui/*.ntvs*
 wimoor-ui/*.njsproj
 wimoor-ui/*.sln
 wimoor-ui/*.sw?
-wimoor-ui/node_modules/.cache/
+wimoor-ui/node_modules/
 wimoor-ui/src/views/customized/

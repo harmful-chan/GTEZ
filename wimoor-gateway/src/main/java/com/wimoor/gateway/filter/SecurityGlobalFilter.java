@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -46,8 +47,7 @@ public class SecurityGlobalFilter implements GlobalFilter, Ordered {
     public static final String HEADER_USER_INFO = "X-USERINFO";
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
- 
-    
+
     boolean filterIsIgnoreUrl(String path) {
     	    if(path.contains("swagger")||path.contains("api-docs"))return true;
     	    if(whiteList.contains(path))return true;
