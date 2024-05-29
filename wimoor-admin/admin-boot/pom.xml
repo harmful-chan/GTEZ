@@ -142,6 +142,104 @@
                      <target>1.8</target>
                  </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <!-- linux 系统-->
+                        <!--                        <configuration>-->
+                        <!--                            <executable>sh</executable>-->
+                        <!--                            <arguments>-->
+                        <!--                                <argument>${project.parent.basedir}/script/load-env.sh</argument>-->
+                        <!--                            </arguments>-->
+                        <!--                        </configuration>-->
+                        <!-- win 系统-->
+                        <configuration>
+                            <executable>powershell</executable>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                            <arguments>
+                                <argument>-ExecutionPolicy</argument>
+                                <argument>Unrestricted</argument>
+                                <argument>-File</argument>
+                                <argument>${project.parent.basedir}/../script/load-env.ps1</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- docker的maven插件，官网：https://github.com/spotify/docker-maven-plugin -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.12</version>
+                <executions>
+                    <execution>
+                        <id>build-image</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 注意imageName一定要是符合正则[a-z0-9-_.]的，否则构建不会成功 -->
+                            <!-- 详见：https://github.com/spotify/docker-maven-plugin    Invalid repository name ... only [a-z0-9-_.] are allowed-->
+                            <imageName>wimoor-admin:${env.ADMIN_VERSION}</imageName>
+                            <!-- 指定Dockerfile所在的路径 -->
+                            <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                            <resources>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.build.directory}</directory>
+                                    <include>${project.build.finalName}.jar</include>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>image-tag</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>tag</goal>      <!--tag命令，相当于docker的tag命令-->
+                        </goals>
+                        <configuration>
+                            <image>wimoor-admin:${env.ADMIN_VERSION}</image>   <!--镜像名-->
+                            <newName>${env.REMOTE_HUB}wimoor-admin:${env.ADMIN_VERSION}</newName>   <!--打的标签名-->
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>package-push</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>push</goal>    <!--相当于docker的push命令！！！ 这里会去maven的setting文件中根据configuration/serverId标签的id，读取到docker私有仓库的用户名和密码-->
+                        </goals>
+                        <configuration>
+                            <imageName>${env.REMOTE_HUB}wimoor-admin:${env.ADMIN_VERSION}</imageName>  <!--要push的镜像名-->
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- 注意imageName一定要是符合正则[a-z0-9-_.]的，否则构建不会成功 -->
+                    <!-- 详见：https://github.com/spotify/docker-maven-plugin    Invalid repository name ... only [a-z0-9-_.] are allowed-->
+                    <imageName>wimoor-admin:${env.ADMIN_VERSION}</imageName>
+                    <!-- 指定Dockerfile所在的路径 -->
+                    <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+
+
             <!-- docker的maven插件，官网：https://github.com/spotify/docker-maven-plugin -->
             <plugin>
                 <groupId>com.spotify</groupId>
