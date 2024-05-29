@@ -1,12 +1,3 @@
-项目总述
-====
-* Wimoor erp是国内首款百分百开源、支持商用的亚马逊erp系统
-* 不仅现有系统免费，系统源码也都是公之于众的，可以任意安装、卸载和升级，没有用户数量限制
-* 除了为跨境卖家提供一站式服务，我们也提供系统源代码搭建，成品系统部署搭建，支持功能定制开发等相关服务
-* 官网地址：https://wimoor.com/ 商务或技术交流请联系客服QQ：1874049814 微信：wimoorerp
-* 系统注册地址：https://erp.wimoor.com/toRegister.do 大家可免费使用
-* 欢迎加入Wimoor ERP开源项目交流群（可联系客服QQ或微信拉你入群）
-
 开源协议
 ====
 本系统100%开源，支持商用，遵守MIT协议，采用微服务+前后端分离+中央登录的模式，可支持新旧系统无缝对接
@@ -25,10 +16,13 @@
 ====
 建议开发者使用以下环境，可以避免版本带来的问题
 
-* IDE: eclipse
+* IDE: idea
 * DB: Mysql5.7+
 * JDK: JDK1.8
 * Maven: Maven3.2.3+
+* nacos-server:v2.3.0
+* seata-server:1.4.2
+* redis:7.2.4
 
 部署系统需要
 ====
@@ -37,7 +31,7 @@
 * nacos 微服务中心
 * seata 微服务事务（用于分库之后）
 * cas-server 中央登录模块（非必要）
-* 建议使用开发工具：eclipse
+* 建议使用开发工具：idea
 * 建议使用Java语言的软件开发工具包：JDK1.8
 * 每次启动需要提前开启：nacos 和seata
 
@@ -62,6 +56,37 @@
 * 第八步：运行wimoor-admin,wimoor-gateway,wimoor-auth,wimoor-amazon,wimoor-erp,wimoor-amazon-adv
 * 第九步：用前端开发工具hbuild或者VSCode 打开wimoorUI
 * 第十步：修改config里面的路由改成127.0.0.1 然后npm run serve
+
+Docker 部署说明
+====
+* 自行安装 docker docker-compose
+* 运行数据库，数据文件夹不存在会自动执行sql创建数据库
+```shell
+docker-compose up wimoor-mysql -d
+# ...
+# wimoor-mysql  | Version: '5.7.40'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server (GPL)
+```
+* 等待运行完毕 后运行 nacos
+```shell
+docker-compose up wimoor-nacos -d
+```
+* nacos 是中心注册服务需要运行完毕后再运行 seata redis
+```shell
+docker-compose up wimoor-redis wimoor-seata -d
+```
+* 初始化nacos *新部署才需要初始化*
+```shell
+docker-compose up wimoor-init
+```
+* 运行其他服务
+```shell
+docker-compose up wimoor-gateway wimoor-amazon wimoor-erp wimoor-amazon-adv wimoor-auth wimoor-admin -d
+```
+
+
+
+
+
 
 系统界面
 ====

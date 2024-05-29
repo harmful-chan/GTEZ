@@ -384,7 +384,7 @@
 							<goal>tag</goal>      <!--tag命令，相当于docker的tag命令-->
 						</goals>
 						<configuration>
-							<image>wimoor-erp:${env.AMAZON_ADV_VERSION}</image>   <!--镜像名-->
+							<image>wimoor-amazon-adv:${env.AMAZON_ADV_VERSION}</image>   <!--镜像名-->
 							<newName>${env.REMOTE_HUB}wimoor-amazon-adv:${env.AMAZON_ADV_VERSION}</newName>   <!--打的标签名-->
 						</configuration>
 					</execution>

@@ -181,6 +181,18 @@ services:
     networks:
       - network
 
+
+  wimoor-ui:
+    image: ${REMOTE_UI_IMAGE}
+    container_name: wimoor-ui
+    build:
+      context: wimoor-ui
+      dockerfile: docker/Dockerfile
+    ports:
+      - 8080:80
+    networks:
+      - network
+
 networks:
   network:
     driver: bridge
