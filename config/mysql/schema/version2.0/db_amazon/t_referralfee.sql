@@ -1,5 +1,5 @@
 USE `db_amazon`;
-INSERT INTO `t_referralfee` (`id`, `type`, `isMedia`, `name`, `loweast`, `top1`, `top2`, `top3`, `percent1`, `percent2`, `percent3`, `country`, `parent_id`) VALUES
+INSERT IGNORE INTO `t_referralfee` (`id`, `type`, `isMedia`, `name`, `loweast`, `top1`, `top2`, `top3`, `percent1`, `percent2`, `percent3`, `country`, `parent_id`) VALUES
 	(1, '3D Printed Products', '0', NULL, 0.300000, NULL, NULL, NULL, 0.120000, NULL, NULL, 'US', NULL),
 	(2, 'Amazon Device Accessories', '0', NULL, 0.300000, NULL, NULL, NULL, 0.450000, NULL, NULL, 'US', NULL),
 	(3, 'Amazon Kindle', '0', NULL, 0.000000, NULL, NULL, NULL, 0.150000, NULL, NULL, 'US', NULL),

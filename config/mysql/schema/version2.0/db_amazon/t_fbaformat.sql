@@ -1,5 +1,5 @@
 USE `db_amazon`;
-INSERT INTO `t_fbaformat` (`id`, `country`, `ismedia`, `producttierId`, `fba_format`, `month`, `weight`, `effective_date`, `expiry_date`, `dispatch_type`, `isclothing`) VALUES
+INSERT IGNORE INTO `t_fbaformat` (`id`, `country`, `ismedia`, `producttierId`, `fba_format`, `month`, `weight`, `effective_date`, `expiry_date`, `dispatch_type`, `isclothing`) VALUES
 	('01e53cb0-63d9-11e8-a076-00e04c023f0e', 'AU', NULL, 'std_parcel_au', '9.61', NULL, 7.0000, NULL, NULL, NULL, NULL),
 	('0573d63e-73de-11ea-b1ed-00e04c023f0e', 'JP', NULL, 'supersize4_jp', '5625', NULL, NULL, NULL, NULL, NULL, NULL),
 	('08202087-63da-11e8-a076-00e04c023f0e', 'AU', NULL, 'std_oversize_au', '9.59', NULL, 5.0000, NULL, NULL, NULL, NULL),

@@ -1,6 +1,0 @@
-mvn spring-boot:run -pl com.wimoor:wimoor-gateway -D spring-boot.run.jvmArguments="-Xdebug -Xms128m -Xmx128m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5099"
-mvn spring-boot:run -pl com.wimoor:amazon-boot -D spring-boot.run.jvmArguments="-Xdebug -Xms128m -Xmx128m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5093"
-mvn spring-boot:run -pl com.wimoor:erp-boot -D spring-boot.run.jvmArguments="-Xdebug -Xms128m -Xmx128m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5086"
-mvn spring-boot:run -pl com.wimoor:amazon-adv-boot -D spring-boot.run.jvmArguments="-Xdebug -Xms128m -Xmx128m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5092" 
-mvn spring-boot:run -pl com.wimoor:wimoor-auth -D spring-boot.run.jvmArguments="-Xdebug -Xms128m -Xmx128m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5087"
-mvn spring-boot:run -pl com.wimoor:admin-boot -D spring-boot.run.jvmArguments="-Xdebug -Xms128m -Xmx128m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5085" 

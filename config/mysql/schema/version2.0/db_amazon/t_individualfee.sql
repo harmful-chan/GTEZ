@@ -1,5 +1,5 @@
 USE `db_amazon`;
-INSERT INTO `t_individualfee` (`id`, `country`, `perItemFee`) VALUES
+INSERT IGNORE INTO `t_individualfee` (`id`, `country`, `perItemFee`) VALUES
 	(1, 'US', 0.99),
 	(2, 'UK', 0.75),
 	(3, 'DE', 0.99),

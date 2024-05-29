@@ -58,7 +58,7 @@ services:
       - network
 
   wimoor-redis:
-    image: redis:6.2
+    image: redis:7.2.4
     container_name: wimoor-redis
     restart: always
     ports:
@@ -77,6 +77,7 @@ services:
     container_name: wimoor-gateway
     environment:
       - WIMOOR_NACOS_HOST=wimoor-nacos
+    command: java -Xdebug -Xms128m -Xmx128m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5099 -jar /app.jar --server.port=8099
     ports:
       - 8099:8099
       - 5099:5099
@@ -94,6 +95,7 @@ services:
     ports:
       - 8093:8093
       - 5093:5093
+    command: java -Xdebug -Xms128m -Xmx128m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5093 -jar /app.jar --server.port=8093
     depends_on:
       - wimoor-nacos
       - wimoor-seata
@@ -110,6 +112,7 @@ services:
     ports:
       - 8086:8086
       - 5086:5086
+    command: java -Xdebug -Xms128m -Xmx128m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5086 -jar /app.jar --server.port=8086
     depends_on:
       - wimoor-nacos
       - wimoor-seata
@@ -125,6 +128,7 @@ services:
     ports:
       - 8092:8092
       - 5092:5092
+    command: java -Xdebug -Xms128m -Xmx128m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5092 -jar /app.jar --server.port=8092
     depends_on:
       - wimoor-nacos
       - wimoor-gateway
@@ -139,6 +143,7 @@ services:
     ports:
       - 8087:8087
       - 5087:5087
+    command: java -Xdebug -Xms128m -Xmx128m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5087 -jar /app.jar --server.port=8087
     depends_on:
       - wimoor-nacos
       - wimoor-gateway
@@ -155,6 +160,7 @@ services:
     ports:
       - 8085:8085
       - 5085:5085
+    command: java -Xdebug -Xms128m -Xmx128m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5085 -jar /app.jar --server.port=8085
     depends_on:
       - wimoor-nacos
       - wimoor-redis
@@ -162,20 +168,20 @@ services:
     networks:
       - network
 
-#  wimoor-init:
-#    image: centos:7.9.2009
-#    container_name: wimoor-init
-#    volumes:
-#      - ./config/init.d:/init.d
-#    environment:
-#      - NACOS_SERVICE_HOST=wimoor-nacos
-#      - NACOS_SERVICE_PORT=8848
-#    command: ["/bin/bash","-c", "/init.d/nacos-init.sh"]
-#    depends_on:
-#      - wimoor-nacos
-#      - wimoor-mysql
-#    networks:
-#      - network
+  wimoor-init:
+    image: centos:7.9.2009
+    container_name: wimoor-init
+    volumes:
+      - ./config/init.d:/init.d
+    environment:
+      - NACOS_SERVICE_HOST=wimoor-nacos
+      - NACOS_SERVICE_PORT=8848
+    command: ["/bin/bash","-c", "/init.d/nacos-init.sh"]
+    depends_on:
+      - wimoor-nacos
+      - wimoor-mysql
+    networks:
+      - network
 
 networks:
   network:

@@ -1,7 +1,7 @@
 FROM mysql:5.7.40
 LABEL authors=$AUTHORS
 
-
+VOLUME /var/lib/mysql
 
 # nacos Mysql 初始化数据库
 ADD /nacos/mysql-schema.sql /docker-entrypoint-initdb.d/nacos-mysql.sql

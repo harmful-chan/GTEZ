@@ -1,5 +1,5 @@
 USE `db_amazon`;
-INSERT INTO `t_inplacefeeformat` (`id`, `inplacefeeid`, `producttierId`, `standard`, `format`, `description`, `country`) VALUES
+INSERT IGNORE INTO `t_inplacefeeformat` (`id`, `inplacefeeid`, `producttierId`, `standard`, `format`, `description`, `country`) VALUES
 	(1, 'one', NULL, b'1', 'weight>2? "0.30+0.10*({0}-2)" :"0.30"', '是否是标准尺寸，标准尺寸：0.30 美元 + 0.10 美元/磅（超出首重 2 磅的部分）;超大尺寸：1.65 美元 + 0.20 美元/磅（超出首重 5 磅的部分）', 'US'),
 	(2, 'three', NULL, b'1', '0', '免费', 'US'),
 	(3, 'two', NULL, b'1', 'weight>2? "0.10+0.10*({0}-2)" :"0.10"', '是否是标准尺寸，标准尺寸：0.10 美元 + 0.10 美元/磅（超出首重 2 磅的部分）；超大尺寸：0.50 美元 + 0.20 美元/磅（超出首重 5 磅的部分）', 'US'),

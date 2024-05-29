@@ -5,10 +5,17 @@
     <file url="file://$PROJECT_DIR$/config/mysql/schema/db_quartz.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/config/mysql/schema/db_seata.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/config/mysql/schema/version1.1/db_wimoor.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/config/mysql/schema/version1.1/t_wimoor.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/config/mysql/schema/version2.0/db_admin.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/config/mysql/schema/version2.0/db_admin/t_data.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/config/mysql/schema/version2.0/db_admin/t_role.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/config/mysql/schema/version2.0/db_admin/t_sys_menu.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/config/mysql/schema/version2.0/db_amazon.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/config/mysql/schema/version2.0/db_amazon/t_amz_adv_report_metrics.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/config/mysql/schema/version2.0/db_amazon/t_data.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/config/mysql/schema/version2.0/db_amazon/t_fba_labeling_service_fee.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/config/mysql/schema/version2.0/db_amazon_adv.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/config/mysql/schema/version2.0/db_erp.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/config/mysql/schema/version2.0/db_erp/t_erp_amazon_feedstatus.sql" dialect="MySQL" />
   </component>
 </project>

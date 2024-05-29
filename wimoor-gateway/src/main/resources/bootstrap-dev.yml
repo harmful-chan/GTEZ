@@ -19,6 +19,3 @@ spring:
         shared-configs[1]: 
           data-id: wimoor-commom-ext
           refresh: true
-logging:
-  level:
-    org.springframework.cloud.gateway: trace
