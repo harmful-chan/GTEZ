@@ -1,5 +1,4 @@
 FROM mysql:5.7.40
-LABEL authors=$AUTHORS
 
 VOLUME /var/lib/mysql
 

@@ -2,13 +2,11 @@ version: '3'
 
 services:
   wimoor-mysql:
-    image: wimoor-mysql
+    image: ${REMOTE_MYSQL_IMAGE}
     container_name: wimoor-mysql
     build:
       context: config/mysql
       dockerfile: Dockerfile
-      args:
-        AUTHORS: ${AUTHORS}
     ports:
       - 3306:3306
     volumes:
@@ -73,7 +71,7 @@ services:
       - network
 
   wimoor-gateway:
-    image: wimoor-gateway
+    image: ${REMOTE_GATEWAY_IMAGE}
     container_name: wimoor-gateway
     environment:
       - WIMOOR_NACOS_HOST=wimoor-nacos
@@ -87,7 +85,7 @@ services:
       - network
 
   wimoor-amazon:
-    image: wimoor-amazon
+    image: ${REMOTE_AMAZON_IMAGE}
     container_name: wimoor-amazon
     environment:
       - WIMOOR_NACOS_HOST=wimoor-nacos
@@ -104,7 +102,7 @@ services:
       - network
 
   wimoor-erp:
-    image: wimoor-erp
+    image: ${REMOTE_ERP_IMAGE}
     container_name: wimoor-erp
     environment:
       - WIMOOR_NACOS_HOST=wimoor-nacos
@@ -121,7 +119,7 @@ services:
       - network
 
   wimoor-amazon-adv:
-    image: wimoor-amazon-adv
+    image: ${REMOTE_AMAZON_ADV_IMAGE}
     container_name: wimoor-amazon-adv
     environment:
       - WIMOOR_NACOS_HOST=wimoor-nacos
@@ -136,7 +134,7 @@ services:
       - network
 
   wimoor-auth:
-    image: wimoor-auth
+    image: ${REMOTE_AUTH_IMAGE}
     container_name: wimoor-auth
     environment:
       - WIMOOR_NACOS_HOST=wimoor-nacos
@@ -151,7 +149,7 @@ services:
       - network
 
   wimoor-admin:
-    image: wimoor-admin
+    image: ${REMOTE_ADMIN_IMAGE}
     container_name: wimoor-admin
     environment:
       - WIMOOR_NACOS_HOST=wimoor-nacos
