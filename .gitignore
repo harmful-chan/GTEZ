@@ -29,6 +29,7 @@ wimoor-ui/pnpm-debug.log*
 
 
 # Editor directories and files
+wimoor-ui/node
 wimoor-ui/.idea
 wimoor-ui/.vscode
 wimoor-ui/*.suo

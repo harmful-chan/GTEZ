@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.wimoor</groupId>
+		<artifactId>wimoor-all</artifactId>
+		<version>2.0.0</version>
+	</parent>
+
+	<artifactId>wimoor-ui</artifactId>
+	<name>wimoor-ui</name>
+	<description>for wimoor sso-client </description>
+
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<!-- 添加 frontend-maven-plugin 插件 -->
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.9.0</version>
+				<configuration>
+					<nodeVersion>v14.21.3</nodeVersion>
+					<npmVersion>6.14.18</npmVersion>
+				</configuration>
+				<executions>
+					<execution>
+						<!-- 在 Maven 构建的 package 阶段执行 -->
+						<id>install-node-and-npm</id>
+						<phase>install</phase>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>npm install</id>
+						<phase>install</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>install</arguments>
+							<workingDirectory>${project.parent.basedir}/wimoor-ui</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm run build</id>
+						<phase>install</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build</arguments>
+							<workingDirectory>${project.parent.basedir}/wimoor-ui</workingDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<!-- linux 系统-->
+						<!--                        <configuration>-->
+						<!--                            <executable>sh</executable>-->
+						<!--                            <arguments>-->
+						<!--                                <argument>${project.parent.basedir}/script/load-env.sh</argument>-->
+						<!--                            </arguments>-->
+						<!--                        </configuration>-->
+						<!-- win 系统-->
+						<configuration>
+							<executable>powershell</executable>
+							<workingDirectory>${project.basedir}</workingDirectory>
+							<arguments>
+								<argument>-ExecutionPolicy</argument>
+								<argument>Unrestricted</argument>
+								<argument>-File</argument>
+								<argument>${project.parent.basedir}/script/load-env.ps1</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>install</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/docker/dist</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/dist</directory>
+									<includes>
+										<include>**/*.*</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<!-- docker的maven插件，官网：https://github.com/spotify/docker-maven-plugin -->
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.12</version>
+				<executions>
+					<execution>
+						<id>build-image</id>
+						<phase>install</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+						<configuration>
+							<imageName>wimoor-ui:${env.UI_VERSION}</imageName>
+							<dockerDirectory>${project.basedir}/docker</dockerDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>image-tag</id>
+						<phase>install</phase>
+						<goals>
+							<goal>tag</goal>      <!--tag命令，相当于docker的tag命令-->
+						</goals>
+						<configuration>
+							<image>wimoor-ui:${env.UI_VERSION}</image>   <!--镜像名-->
+							<newName>${env.REMOTE_HUB}wimoor-ui:${env.UI_VERSION}</newName>   <!--打的标签名-->
+						</configuration>
+					</execution>
+					<execution>
+						<id>package-push</id>
+						<phase>install</phase>
+						<goals>
+							<goal>push</goal>    <!--相当于docker的push命令！！！ 这里会去maven的setting文件中根据configuration/serverId标签的id，读取到docker私有仓库的用户名和密码-->
+						</goals>
+						<configuration>
+							<imageName>${env.REMOTE_HUB}wimoor-ui:${env.UI_VERSION}</imageName>  <!--要push的镜像名-->
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- 注意imageName一定要是符合正则[a-z0-9-_.]的，否则构建不会成功 -->
+					<!-- 详见：https://github.com/spotify/docker-maven-plugin    Invalid repository name ... only [a-z0-9-_.] are allowed-->
+					<imageName>wimoor-ui:${env.UI_VERSION}</imageName>
+					<!-- 指定Dockerfile所在的路径 -->
+					<dockerDirectory>${project.basedir}/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.basedir}/dist</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>

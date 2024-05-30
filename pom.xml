@@ -14,6 +14,7 @@
   	<module>wimoor-erp</module>
   	<module>wimoor-amazon</module>
   	<module>wimoor-amazon-adv</module>
+	<module>wimoor-ui</module>
   </modules>
   
    <parent>

@@ -34,5 +34,6 @@
     <file url="file://$PROJECT_DIR$/wimoor-gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/wimoor-shopee/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/wimoor-ui" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/wimoor-ui/src/main/java" charset="UTF-8" />
   </component>
 </project>

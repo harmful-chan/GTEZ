@@ -11,6 +11,7 @@
         <module name="amazon-sp-api" />
         <module name="common-storage" />
         <module name="wimoor-auth" />
+        <module name="wimoor-ui" />
         <module name="admin-api" />
         <module name="admin-boot" />
         <module name="common-redis" />
@@ -52,6 +53,7 @@
       <module name="wimoor-auth" options="-parameters" />
       <module name="wimoor-gateway" options="-parameters" />
       <module name="wimoor-shopee" options="-parameters" />
+      <module name="wimoor-ui" options="-parameters" />
     </option>
   </component>
 </project>
