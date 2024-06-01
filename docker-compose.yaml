@@ -1,8 +1,8 @@
-version: '3'
+version: '3.8'
 
 services:
   wimoor-mysql:
-    image: ${REMOTE_MYSQL_IMAGE}
+    image: ${REMOTE_HUB}wimoor-mysql:${DB_VERSION}
     container_name: wimoor-mysql
     build:
       context: config/mysql
@@ -71,7 +71,7 @@ services:
       - network
 
   wimoor-gateway:
-    image: ${REMOTE_GATEWAY_IMAGE}
+    image: ${REMOTE_HUB}wimoor-gateway:${GATEWAY_VERSION}
     container_name: wimoor-gateway
     environment:
       - WIMOOR_NACOS_HOST=wimoor-nacos
@@ -85,7 +85,7 @@ services:
       - network
 
   wimoor-amazon:
-    image: ${REMOTE_AMAZON_IMAGE}
+    image: ${REMOTE_HUB}wimoor-amazon:${AMAZON_VERSION}
     container_name: wimoor-amazon
     environment:
       - WIMOOR_NACOS_HOST=wimoor-nacos
@@ -102,7 +102,7 @@ services:
       - network
 
   wimoor-erp:
-    image: ${REMOTE_ERP_IMAGE}
+    image: ${REMOTE_HUB}wimoor-erp:${ERP_VERSION}
     container_name: wimoor-erp
     environment:
       - WIMOOR_NACOS_HOST=wimoor-nacos
@@ -119,7 +119,7 @@ services:
       - network
 
   wimoor-amazon-adv:
-    image: ${REMOTE_AMAZON_ADV_IMAGE}
+    image: ${REMOTE_HUB}wimoor-amazon-adv:${AMAZON_ADV_VERSION}
     container_name: wimoor-amazon-adv
     environment:
       - WIMOOR_NACOS_HOST=wimoor-nacos
@@ -134,7 +134,7 @@ services:
       - network
 
   wimoor-auth:
-    image: ${REMOTE_AUTH_IMAGE}
+    image: ${REMOTE_HUB}wimoor-auth:${AUTH_VERSION}
     container_name: wimoor-auth
     environment:
       - WIMOOR_NACOS_HOST=wimoor-nacos
@@ -149,7 +149,7 @@ services:
       - network
 
   wimoor-admin:
-    image: ${REMOTE_ADMIN_IMAGE}
+    image: ${REMOTE_HUB}wimoor-admin:${ADMIN_VERSION}
     container_name: wimoor-admin
     environment:
       - WIMOOR_NACOS_HOST=wimoor-nacos
@@ -183,7 +183,7 @@ services:
 
 
   wimoor-ui:
-    image: ${REMOTE_UI_IMAGE}
+    image: ${REMOTE_HUB}wimoor-ui:${UI_VERSION}
     container_name: wimoor-ui
     build:
       context: wimoor-ui

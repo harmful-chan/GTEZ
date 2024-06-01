@@ -5,6 +5,7 @@ wimoor-common/target/
 wimoor-erp/target/
 wimoor-gateway/target/
 wimoor-shopee/target/
+wimoor-ui/target/
 target
 /wimoor-admin/admin-boot/*.factorypath
 *.factorypath
