@@ -1,4 +1,4 @@
-<strong><p>此项目由深圳市万墨信息科技有限公司开发，如果有任何疑问请联系开发团队。</p></strong>
+<strong><p>此项目由广州八方全球电子商务贸易有限公司开发，如果有任何疑问请联系开发团队。</p></strong>
 
 <strong><p>1、安装node (注意将Bin添加环境变量Path中)</p></strong>
   1>下载node[](https://nodejs.org/en/download/)<br>

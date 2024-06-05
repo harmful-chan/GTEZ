@@ -255,7 +255,7 @@ public class AmzFinEmailServiceImpl implements IAmzFinEmailService{
 		buf.append("<span style='color: rgb(192, 192, 192); font-size: x-small;'> 如果您有任何关于用户体验方面的问题或建议，都可联系我们：service@wimoor.com </span>");
 		buf.append("</div>");
 		buf.append("<div>");
-		buf.append("<span style='color: rgb(192, 192, 192); font-size: x-small;'> 如有其它疑问，请拨打wimoor官方热线 86-13554833402获得更多帮助,Copyright © 2017 深圳市万墨信息科技有限公司版权所有   </span>");
+		buf.append("<span style='color: rgb(192, 192, 192); font-size: x-small;'> 如有其它疑问，请拨打wimoor官方热线 86-13554833402获得更多帮助,Copyright © 2017 广州八方全球电子商务贸易有限公司版权所有   </span>");
 		buf.append("</div>");
 		buf.append("</div>");
 		buf.append("</div>");

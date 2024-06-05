@@ -45,7 +45,7 @@
 	 <el-affix position="bottom" :offset="20">
 		 <div class="text-center filing-number">
 	   <span class="font-extraSmall">
-	   	Copyright © 2017 深圳市万墨信息科技有限公司版权所有 | 粤ICP备19045760号
+	   	Copyright © 2017 广州八方全球电子商务贸易有限公司版权所有 | 粤ICP备19045760号
 	   </span>
 	   </div>
 	  </el-affix>
