@@ -11,11 +11,13 @@ import com.wimoor.aliexpress.mapper.AccessTokenMapper;
 import com.wimoor.aliexpress.pojo.entity.AccessToken;
 import com.wimoor.aliexpress.service.IAliexpresAuthorityService;
 import com.wimoor.common.GeneralUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Service("AliexpresAuthorityService")
+@Service
+@RequiredArgsConstructor
 public class AliexpresAuthorityServiceImpl extends ServiceImpl<AccessTokenMapper, AccessToken> implements IAliexpresAuthorityService {
     @Value("${aliexpress.api.appKey}")
     private String appKey;
@@ -45,7 +47,7 @@ public class AliexpresAuthorityServiceImpl extends ServiceImpl<AccessTokenMapper
             IopResponse response = iopClient.execute(request, Protocol.GOP);
             String body = response.getGopResponseBody();
             AccessToken token = GeneralUtil.parse(body, AccessToken.class);
-
+            return token;
 
 //            if (token != null){  // token 不存在
 //                this.baseMapper.insert(token);

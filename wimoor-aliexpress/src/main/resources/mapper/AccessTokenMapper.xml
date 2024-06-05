@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wimoor.aliexpress.mapper.AccessTokenMapper">
 
-    <resultMap type="com.wimoor.aliexpress.pojo.entity.AccessToken" id="BaseResultMap">
+    <resultMap id="BaseResultMap" type="com.wimoor.aliexpress.pojo.entity.AccessToken" >
         <result property="id" column="id" jdbcType="VARCHAR"/>
         <result property="refreshTokenValidTime" column="refresh_token_valid_time" jdbcType="VARCHAR"/>
         <result property="havanaId" column="havana_id" jdbcType="VARCHAR"/>
@@ -23,23 +23,9 @@
         <result property="account" column="account" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <!-- 批量插入 -->
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into db_aliexpress.t_access_token(refresh_token_valid_timehavana_idcodeexpire_timelocaleuser_nickaccess_tokenrefresh_tokenaccount_iduser_idaccount_platformrefresh_expires_inexpires_insprequest_idseller_idaccount)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-        (#{entity.refreshTokenValidTime}#{entity.havanaId}#{entity.code}#{entity.expireTime}#{entity.locale}#{entity.userNick}#{entity.accessToken}#{entity.refreshToken}#{entity.accountId}#{entity.userId}#{entity.accountPlatform}#{entity.refreshExpiresIn}#{entity.expiresIn}#{entity.sp}#{entity.requestId}#{entity.sellerId}#{entity.account})
-        </foreach>
-    </insert>
-    <!-- 批量插入或按主键更新 -->
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into db_aliexpress.t_access_token(refresh_token_valid_timehavana_idcodeexpire_timelocaleuser_nickaccess_tokenrefresh_tokenaccount_iduser_idaccount_platformrefresh_expires_inexpires_insprequest_idseller_idaccount)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.refreshTokenValidTime}#{entity.havanaId}#{entity.code}#{entity.expireTime}#{entity.locale}#{entity.userNick}#{entity.accessToken}#{entity.refreshToken}#{entity.accountId}#{entity.userId}#{entity.accountPlatform}#{entity.refreshExpiresIn}#{entity.expiresIn}#{entity.sp}#{entity.requestId}#{entity.sellerId}#{entity.account})
-        </foreach>
-        on duplicate key update
-refresh_token_valid_time = values(refresh_token_valid_time) havana_id = values(havana_id) code = values(code) expire_time = values(expire_time) locale = values(locale) user_nick = values(user_nick) access_token = values(access_token) refresh_token = values(refresh_token) account_id = values(account_id) user_id = values(user_id) account_platform = values(account_platform) refresh_expires_in = values(refresh_expires_in) expires_in = values(expires_in) sp = values(sp) request_id = values(request_id) seller_id = values(seller_id) account = values(account)     </insert>
-
+    <!-- 自定义 SQL 映射 -->
+    <select id="selectByAccount" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT * FROM t_access_token WHERE account = #{account}
+    </select>
 </mapper>
 

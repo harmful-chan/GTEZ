@@ -6,6 +6,7 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
@@ -52,4 +53,10 @@ public class RedisConfig {
         .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisTemplate.getValueSerializer()));
         return new CustomRedisCacheManager(redisCacheWriter, redisCacheConfiguration);
     }
+
+//    @Bean
+//    public RedisConnectionFactory redisConnectionFactory() {
+//        // 这里使用 LettuceConnectionFactory 作为示例，你也可以根据需要选择其他的 Redis 连接工厂
+//        return new LettuceConnectionFactory();
+//    }
 }

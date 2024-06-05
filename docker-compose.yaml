@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 
 services:
   wimoor-mysql:
@@ -167,14 +167,14 @@ services:
       - network
 
   wimoor-init:
-    image: centos:7.9.2009
+    image: alpine:latest
     container_name: wimoor-init
     volumes:
       - ./config/init.d:/init.d
     environment:
       - NACOS_SERVICE_HOST=wimoor-nacos
       - NACOS_SERVICE_PORT=8848
-    command: ["/bin/bash","-c", "/init.d/nacos-init.sh"]
+    command: ["/bin/sh", "/init.d/nacos-init.sh"]
     depends_on:
       - wimoor-nacos
       - wimoor-mysql

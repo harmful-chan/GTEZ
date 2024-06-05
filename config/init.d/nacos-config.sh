@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-while getopts ":f:h:p:g:t:u:w:" opt
+while getopts "f:h:p:g:t:u:w" opt
 do
   case "$opt" in
   f)
@@ -38,11 +38,12 @@ do
     password=$OPTARG
     ;;
   ?)
-    echo " USAGE OPTION: $0 [-f file] [-h host] [-p port] [-g group] [-t tenant] [-u username] [-w password] "
+    echo " USAGE OPTION: $0 $OPTARG [-f file] [-h host] [-p port] [-g group] [-t tenant] [-u username] [-w password] "
     exit 1
     ;;
   esac
 done
+
 
 if [ -z ${host} ]; then
     host=localhost

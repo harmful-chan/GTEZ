@@ -31,6 +31,8 @@ public class UserInfoFilter implements Filter {
             UserInfoContext.set(userInfo);
         }
         chain.doFilter(request, response);
+
+
         log.debug("获取登录人信息"+userInfoJson);
     }
 }
