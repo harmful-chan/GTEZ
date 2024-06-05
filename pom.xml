@@ -15,6 +15,8 @@
   	<module>wimoor-amazon</module>
   	<module>wimoor-amazon-adv</module>
 	<module>wimoor-ui</module>
+	  <module>wimoor-aliexpress</module>
+      <module>wimoor-aliexpress</module>
   </modules>
   
    <parent>

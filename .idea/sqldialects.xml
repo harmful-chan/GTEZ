@@ -17,5 +17,6 @@
     <file url="file://$PROJECT_DIR$/config/mysql/schema/version2.0/db_amazon_adv.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/config/mysql/schema/version2.0/db_erp.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/config/mysql/schema/version2.0/db_erp/t_erp_amazon_feedstatus.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/config/mysql/schema/version3.0/db_aliexpress.sql" dialect="MySQL" />
   </component>
 </project>

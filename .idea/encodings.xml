@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/aliexpress/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/wimoor-admin/admin-api/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/wimoor-admin/admin-boot/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/wimoor-admin/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/wimoor-admin/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/wimoor-aliexpress/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/wimoor-amazon-adv/amazon-adv-api/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/wimoor-amazon-adv/amazon-adv-boot/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/wimoor-amazon-adv/src/main/java" charset="UTF-8" />

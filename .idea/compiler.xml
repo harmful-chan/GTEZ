@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="amazon-boot" />
         <module name="amazon-sp-api" />
+        <module name="wimoor-aliexpress" />
         <module name="common-storage" />
         <module name="wimoor-auth" />
         <module name="wimoor-ui" />
@@ -30,11 +31,15 @@
         <module name="common-core" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="aliexpress" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="admin-api" options="-parameters" />
       <module name="admin-boot" options="-parameters" />
+      <module name="aliexpress" options="-parameters" />
       <module name="amazon-adv-api" options="-parameters" />
       <module name="amazon-adv-boot" options="-parameters" />
       <module name="amazon-api" options="-parameters" />
@@ -50,6 +55,7 @@
       <module name="common-swagger" options="-parameters" />
       <module name="erp-api" options="-parameters" />
       <module name="erp-boot" options="-parameters" />
+      <module name="wimoor-aliexpress" options="-parameters" />
       <module name="wimoor-auth" options="-parameters" />
       <module name="wimoor-gateway" options="-parameters" />
       <module name="wimoor-shopee" options="-parameters" />
