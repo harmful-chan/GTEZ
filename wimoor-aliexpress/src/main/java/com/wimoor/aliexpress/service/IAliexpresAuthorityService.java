@@ -1,14 +1,14 @@
 package com.wimoor.aliexpress.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.global.iop.util.ApiException;
 import com.wimoor.aliexpress.pojo.entity.AccessToken;
 
 public interface IAliexpresAuthorityService extends IService<AccessToken> {
     public  String  getAuthorityUrl();
 
-    AccessToken createTokenByCode(String code);
+     AccessToken createToken(String code, String account, boolean isOverride) throws ApiException;
 
-    void refreshTokenByAccount(String account);
 
     AccessToken getTokenByAccount(String account);
 }

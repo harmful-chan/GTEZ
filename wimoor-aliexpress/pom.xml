@@ -81,7 +81,21 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/libs/gop-sdk-Java1701065323525.jar</systemPath>
         </dependency>
-<!--        <dependency>-->
+
+        <!--模板引擎-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-core</artifactId>
+            <version>3.4.3.4</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+        <!--        <dependency>-->
 <!--            <groupId>com.baomidou</groupId>-->
 <!--            <artifactId>mybatis-plus-boot-starter</artifactId>-->
 <!--            <version>3.5.1</version> &lt;!&ndash; 请根据需要选择版本 &ndash;&gt;-->

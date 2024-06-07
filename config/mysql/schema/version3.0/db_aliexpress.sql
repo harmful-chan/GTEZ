@@ -20,5 +20,7 @@ CREATE TABLE IF NOT EXISTS `t_access_token` (
     `request_id` varchar(255) DEFAULT NULL,
     `seller_id` varchar(255) DEFAULT NULL,
     `account` varchar(255) DEFAULT NULL,
+    `create_time` datetime DEFAULT NULL,
+    `opt_time` datetime DEFAULT NULL,
     PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

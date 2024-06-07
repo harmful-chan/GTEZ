@@ -1,9 +1,11 @@
 package com.wimoor.aliexpress.pojo.entity;
 
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wimoor.common.pojo.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +15,8 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("t_access_token")
-public class AccessToken extends BaseEntity implements Serializable  {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AccessToken extends BaseEntity  {
 
     @TableField(value = "refresh_token_valid_time")
     private String refreshTokenValidTime;
@@ -65,5 +68,11 @@ public class AccessToken extends BaseEntity implements Serializable  {
 
     @TableField(value = "account")
     private String account;
+
+    @TableField(value = "create_time", fill = FieldFill.INSERT )
+    private String createTime;
+
+    @TableField(value = "opt_time", fill = FieldFill.INSERT_UPDATE)
+    private String optTime;
 }
 

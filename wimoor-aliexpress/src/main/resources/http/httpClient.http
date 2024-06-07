@@ -1,0 +1,13 @@
+GET http://localhost:8099/aliexpress/api/v1/aliexpressauthority/createToken?code=3_506772_A15Y9aDeaNNQ8QznjvAtSI5923495&account=aa13711265893@163.com
+Accept: application/json
+
+<> 2024-06-07T205846.200.json
+<> 2024-06-07T205839.200.json
+
+###
+
+GET http://localhost:8099/aliexpress/api/v1/aliexpressauthority/getToken?account=aa13711265893@163.com
+Accept: application/json
+
+<> 2024-06-07T210056.400.json
+<> 2024-06-07T205946.400.json

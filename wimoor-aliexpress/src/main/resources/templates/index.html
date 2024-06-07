@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Input and Copy</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        .form-control,
+        .btn {
+            height: 38px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="input-group">
+                <textarea th:text="${code}" class="form-control" id="codeInput" rows="5" placeholder="Enter your code here"></textarea>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" id="copyButton">Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('copyButton').addEventListener('click', function() {
+        const codeInput = document.getElementById('codeInput');
+        codeInput.select();
+        document.execCommand('copy');
+        alert('Code copied to clipboard!');
+    });
+</script>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
