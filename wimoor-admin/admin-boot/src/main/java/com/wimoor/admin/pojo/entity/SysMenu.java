@@ -46,7 +46,11 @@ public class SysMenu  implements Serializable{
     private String redirect;
 
     @TableField(exist = false)
+    private String platform;
+
+    @TableField(exist = false)
     private List<String> roles;
+
     @TableField(exist = false)
     private List<String> permissions;
     

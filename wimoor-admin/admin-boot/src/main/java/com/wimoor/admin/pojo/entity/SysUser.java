@@ -1,6 +1,7 @@
 package com.wimoor.admin.pojo.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -103,6 +104,5 @@ public class SysUser   implements Serializable{
 		if(hasEmail==null)return false;
 		return hasEmail;
 	}
- 
 
 }

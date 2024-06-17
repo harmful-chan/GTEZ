@@ -1,0 +1,12 @@
+GET http://localhost:8085/admin/api/v1/dict-items
+
+###
+GET http://localhost:8084/api/auth/ssologinisrun
+
+###
+GET http://localhost:8084/api/auth/login
+
+###
+
+GET http://localhost:8084/api/admin/api/v1/menus/route
+jsessionid: 2357cb26-2431-492d-b7e3-29ce2693b509

@@ -1,63 +1,140 @@
 <template>
- <div  class="block">
-	 <el-button  size="large" @click="drawer = true"  circle  type="primary" plain>
-		  <el-icon style="vertical-align: middle;font-size:18px;">
-              <laptop-computer />
-          </el-icon>
-	  </el-button>
-	  <!-- 弹出层 -->
-	  <el-drawer v-model="drawer" title="平台选择" direction="ttb" :append-to-body='false' size="">
-      <el-row  class="sys-content" :gutter="16">
-		  <el-col :lg="3" :md="4" v-for="p in plant" :key="p.plantid" >
-			  <div class="platform" >
-			  <div class="addAuthorization" v-show='p.imgsty!==""'>
-				 <el-icon style="font-size:20px"><plus /></el-icon>
-				 &nbsp;<span> 添加授权</span>
-			  </div>
-			 <el-image :class='p.imgsty' :src="p.url"></el-image>
+  <div class="block">
+    <el-button size="large" @click="drawer = true" circle type="primary" plain>
+      <el-icon style="vertical-align: middle;font-size:18px;">
+        <laptop-computer />
+      </el-icon>
+    </el-button>
+    <!-- 弹出层 -->
+    <el-drawer v-model="drawer" title="平台选择" direction="ttb" :append-to-body='false' size="">
+      <el-row class="sys-content" :gutter="16">
+        <el-col :lg="3" :md="4" v-for="p in plant" :key="p.plantid" @click="changePlatform(p.plantid)">
+          <div class="platform">
+            <div class="addAuthorization" v-show='p.imgsty!==""'>
+              <el-icon style="font-size:20px">
+                <plus />
+              </el-icon>
+              &nbsp;<span> 添加授权</span>
+            </div>
+            <el-image :class="p.imgsty"  :src="p.url"></el-image>
 
-			  </div>
-		  </el-col>
-	  </el-row >
-     </el-drawer>
-	</div>
+          </div>
+        </el-col>
+      </el-row>
+    </el-drawer>
+  </div>
 </template>
 
 <script >
-import { h, resolveComponent,ref } from 'vue'
-import { ElDivider } from 'element-plus'
-import {Plus} from '@element-plus/icons-vue';
-import {LaptopComputer} from '@icon-park/vue-next';
+import { h, resolveComponent, ref } from "vue";
+import { ElDivider } from "element-plus";
+import { Plus } from "@element-plus/icons-vue";
+import { LaptopComputer } from "@icon-park/vue-next";
+import router from "@/router";
+
 export default {
-        name: "HeaderPlatform",
-        components:{
-			LaptopComputer,Plus
-		},
-	setup() {
-		//数据
-	   let plant=[
-			   {plantid:'amazon',url:require('@/assets/image/plantlogo/unauthorized-amz.png'),imgsty:''},
-			   {plantid:'amazon',url:require('@/assets/image/plantlogo/unauthorized-spee.png'),imgsty:'img-gray' },
-			   {plantid:'amazon',url:require('@/assets/image/plantlogo/unauthorized-wish.png'),imgsty:'img-gray' },
-			   {plantid:'amazon',url:require('@/assets/image/plantlogo/unauthorized-smt.png'),imgsty:'' },
-			   {plantid:'amazon',url:require('@/assets/image/plantlogo/unauthorized-ebay.png'),imgsty:'img-gray' },
-			   {plantid:'amazon',url:require('@/assets/image/plantlogo/unauthorized-cd.png'),imgsty:'img-gray' },
-			   {plantid:'amazon',url:require('@/assets/image/plantlogo/unauthorized-dh.png') ,imgsty:'img-gray'},
-			   {plantid:'amazon',url:require('@/assets/image/plantlogo/unauthorized-walmart.png'),imgsty:'img-gray' },
-			   {plantid:'amazon',url:require('@/assets/image/plantlogo/unauthorized-kilimall.png') ,imgsty:'img-gray'},
-			   {plantid:'amazon',url:require('@/assets/image/plantlogo/unauthorized-mgt.png') ,imgsty:'img-gray'},
-			   {plantid:'amazon',url:require('@/assets/image/plantlogo/unauthorized-woc.png'),imgsty:'img-gray' },
-			   {plantid:'amazon',url:require('@/assets/image/plantlogo/unauthorized-jd.png') ,imgsty:'img-gray'},
-		       
-	   ]
-       return {
-	   size: 0,  
-	   plant, 
-	   spacer: h(ElDivider, { direction: 'vertical' }),
-	   drawer: ref(false),
+  name: "HeaderPlatform",
+  components: {
+    LaptopComputer,
+    Plus
+  },
+  setup() {
+    let drawer = ref(false);
+    //数据
+    let plant = [{
+      plantid: 'amazon',
+      url: require('@/assets/image/plantlogo/unauthorized-amz.png'),
+      imgsty: 'img-gray'
+    },
+      {
+        plantid: 'amazon',
+        url: require('@/assets/image/plantlogo/unauthorized-spee.png'),
+        imgsty: 'img-gray'
+      },
+      {
+        plantid: 'amazon',
+        url: require('@/assets/image/plantlogo/unauthorized-wish.png'),
+        imgsty: 'img-gray'
+      },
+      {
+        plantid: 'aliexpress',
+        url: require('@/assets/image/plantlogo/unauthorized-smt.png'),
+        imgsty: 'img-gray'
+      },
+      {
+        plantid: 'amazon',
+        url: require('@/assets/image/plantlogo/unauthorized-ebay.png'),
+        imgsty: 'img-gray'
+      },
+      {
+        plantid: 'amazon',
+        url: require('@/assets/image/plantlogo/unauthorized-cd.png'),
+        imgsty: 'img-gray'
+      },
+      {
+        plantid: 'amazon',
+        url: require('@/assets/image/plantlogo/unauthorized-dh.png'),
+        imgsty: 'img-gray'
+      },
+      {
+        plantid: 'amazon',
+        url: require('@/assets/image/plantlogo/unauthorized-walmart.png'),
+        imgsty: 'img-gray'
+      },
+      {
+        plantid: 'amazon',
+        url: require('@/assets/image/plantlogo/unauthorized-kilimall.png'),
+        imgsty: 'img-gray'
+      },
+      {
+        plantid: 'amazon',
+        url: require('@/assets/image/plantlogo/unauthorized-mgt.png'),
+        imgsty: 'img-gray'
+      },
+      {
+        plantid: 'amazon',
+        url: require('@/assets/image/plantlogo/unauthorized-woc.png'),
+        imgsty: 'img-gray'
+      },
+      {
+        plantid: 'amazon',
+        url: require('@/assets/image/plantlogo/unauthorized-jd.png'),
+        imgsty: 'img-gray'
+      },
+
+    ]
+
+    function changePlatform(name) {
+      localStorage.setItem("platform", name);
+      let plat = localStorage.getItem("platform");
+      console.log(plat)
+      drawer.value = false;
+
+      router.push({
+        'path': '/',
+        query: {
+          path: "/",
+          name: 'index',
+          closable: false,
+          replace: false
+        },
+        closable: false,
+        replace: false,
+        meta: {keepAlive: true}
+      });
+    }
+
+    return {
+      size: 0,
+      plant,
+      spacer: h(ElDivider, {
+        direction: 'vertical'
+      }),
+      drawer,
+      changePlatform,
     }
   },
-	}
+}
 </script>
 <style >
 .addAuthorization{position: absolute;opacity:0;color:var(--el-color-primary);display:flex;}

@@ -1,48 +1,22 @@
-
 <template>
   <div claas="component-container">
     <!-- 搜索表单 -->
     <el-form ref="queryFormRef" :model="queryParams" :inline="true">
       <el-form-item>
-        <el-button
-          type="success"
-          :icon="Plus"
-          v-if="menu.id && menu.type == 'MENU'"
-          @click="handleAdd"
-          >新增</el-button
-        >
-        <el-button
-          type="danger"
-          :icon="Delete"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-if="menu.id && menu.type == 'MENU'"
-          >删除</el-button
-        >
+        <el-button type="success" :icon="Plus" v-if="menu.id && menu.type == 'MENU'" @click="handleAdd">新增</el-button>
+        <el-button type="danger" :icon="Delete" :disabled="multiple" @click="handleDelete" v-if="menu.id && menu.type == 'MENU'">删除</el-button>
       </el-form-item>
       <el-form-item prop="name">
-        <el-input
-          v-model="queryParams.name"
-          placeholder="权限名称"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.name" placeholder="权限名称" clearable @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" :icon="Search" @click="handleQuery"
-          >搜索</el-button
-        >
+        <el-button type="primary" :icon="Search" @click="handleQuery">搜索</el-button>
         <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
     <!-- 数据表格 -->
-    <el-table
-      :data="permList"
-      v-loading="loading"
-      @selection-change="handleSelectionChange"
-      border
-    >
+    <el-table :data="permList" v-loading="loading" @selection-change="handleSelectionChange" border>
       <el-table-column type="selection" width="40" align="center" />
       <el-table-column label="权限名称" prop="name" width="150" />
       <el-table-column label="URL权限" align="center">
@@ -53,37 +27,18 @@
       <el-table-column label="按钮权限" prop="btnPerm" width="200" />
       <el-table-column label="操作" align="center" width="150">
         <template #default="scope">
-          <el-button
-            type="primary"
-            link
-            @click="handleUpdate(scope.row)"
-          >修改</el-button>
-          <el-button
-            type="danger"
-            link 
-            @click="handleDelete(scope.row)"
-         >删除</el-button>
+          <el-button type="primary" link @click="handleUpdate(scope.row)">修改</el-button>
+          <el-button type="danger" link @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <!-- 分页工具条 -->
-    <pagination
-      v-if="total > 0"
-      :total="total"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      @pagination="handleQuery"
-    />
+    <pagination v-if="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="handleQuery" />
 
     <!-- 表单弹窗 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="700px">
-      <el-form
-        ref="dataFormRef"
-        :model="formData"
-        :rules="rules"
-        label-width="120px"
-      >
+      <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="120px">
         <el-form-item label="权限名称" prop="name">
           <el-input v-model="formData.name" placeholder="请输入权限名称" />
         </el-form-item>
@@ -91,32 +46,12 @@
         <el-form-item label="URL权限标识" prop="urlPerm">
           <el-input placeholder="/api/v1/users" v-model="urlPerm.requestPath">
             <template #prepend>
-              <el-select
-                v-model="urlPerm.serviceName"
-                style="width: 130px"
-                placeholder="所属服务"
-                clearable
-              >
-                <el-option
-                  v-for="item in microServiceOptions"
-                  :key="item.value"
-                  :value="item.value"
-                  :label="item.label"
-                />
+              <el-select v-model="urlPerm.serviceName" style="width: 130px" placeholder="所属服务" clearable>
+                <el-option v-for="item in microServiceOptions" :key="item.value" :value="item.value" :label="item.label" />
               </el-select>
 
-              <el-select
-                v-model="urlPerm.requestMethod"
-                style="width: 120px; margin-left: 20px"
-                placeholder="请求方式"
-                clearable
-              >
-                <el-option
-                  v-for="item in requestMethodOptions"
-                  :key="item.value"
-                  :value="item.value"
-                  :label="item.label"
-                />
+              <el-select v-model="urlPerm.requestMethod" style="width: 120px; margin-left: 20px" placeholder="请求方式" clearable>
+                <el-option v-for="item in requestMethodOptions" :key="item.value" :value="item.value" :label="item.label" />
               </el-select>
             </template>
           </el-input>

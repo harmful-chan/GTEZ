@@ -91,127 +91,120 @@
 </template>
 
 <script setup>
-import {Help,Plus,MenuUnfold,SettingTwo} from '@icon-park/vue-next';
-import {ref,reactive,onMounted,toRefs} from "vue";
-import {Edit,ArrowDown,Delete} from '@element-plus/icons-vue';
-import { ElDivider,ElMessageBox ,ElMessage } from 'element-plus'
-import authApi from '@/api/amazon/auth/authApi.js';
-import authAdvApi from '@/api/amazon/advertisement/auth/authApi.js';
-import {dateFormat} from '@/utils/index';
-import AuthStore from "./authstore.vue"
-import AuthAdv from "./authadv.vue"
-import TaskData from "./taskData.vue"
-			let props = defineProps({storelist:[]});
-			const { storelist,} = toRefs(props);
-			const imageFormat=function(country){
-				return require('@/assets/image/country/'+country.countrycode+'-flag-small.jpg');
-			}
-			const authStoreRef=ref();
-			const authAdvRef=ref();
-			const taskDataRef=ref();
-			let tableData =reactive({list:[]})
-			onMounted(()=>{
-				loadauthData()
-			})
-			function showTaskDialog(row){
-				 taskDataRef.value.show(row);
-			}
-			function storeAdvAuth(){
-				
-			}
-			function loadauthData(){
-				authApi.getBindSeller().then((res)=>{
-					 tableData.list = res.data 
-				})
-			}
-			function rowmerge({row,column,rowIndex,columnIndex}){
-				if(columnIndex === 0){
-					if(rowIndex % 20 === 0){
-						return [20,1]
-						}else{
-                   return [0, 0]
-                   }
-				}	
-			}
-			function storeAuth(){
-				authStoreRef.value.show();
-			}
-			function advAuth(){
-				authAdvRef.value.show();
-			}
-			function refreshAdv(id){
-				authAdvApi.captureProfileById({"id":id}).then((res)=>{
-					ElMessage({
-						type:'success',
-						message:"刷新成功！"
-					})
-				});
-			}
-			function disableAuth(id){
-				ElMessageBox.confirm(
-									    '是否解除绑定，解除后会造成店铺数据缺失！',
-									    {
-									      confirmButtonText: '确定',
-									      cancelButtonText: '取消',
-									      type: 'warning',
-										  callback:(action)=>{
-											 if(action=="confirm"){
-												authAdvApi.disableAuth({"id":id}).then((res)=>{
-													if(res.data&&res.data.code=="success"){
-														ElMessage({
-															type:'success',
-															message:res.data.msg
-														})
-													}else{
-														if(res.data&&res.data.msg){
-															ElMessage({
-																type:'error',
-																message:res.msg
-															})
-														}else{
-															ElMessage({
-																type:'error',
-																message:"广告解除绑定操作失败，请联系管理员"
-															})
-														}
-													}
-													loadauthData();
-												})
-											 }
-										  }
-									    }
-									  )
-			}
-			function deleteByLogic(sellerid){
-				ElMessageBox.confirm(
-									    '是否解除绑定，解除后会造成店铺数据缺失！',
-									    {
-									      confirmButtonText: '确定',
-									      cancelButtonText: '取消',
-									      type: 'warning',
-										  callback:(action)=>{
-											 if(action=="confirm"){
-												authApi.deleteByLogic({"sellerid":sellerid}).then((res)=>{
-													if(res.data.indexOf('成功')>=0){
-														ElMessage({
-															type:'success',
-															message:res.data
-														})
-													}else{
-														ElMessage({
-															type:'error',
-															message:res.data
-														})
-													}
-													loadauthData();
-												})
-											 }
-										  }
-									    }
-									  )
-				
-			}
- 
+import { Help, Plus, MenuUnfold, SettingTwo } from "@icon-park/vue-next";
+import { ref, reactive, onMounted, toRefs } from "vue";
+import { Edit, ArrowDown, Delete } from "@element-plus/icons-vue";
+import { ElDivider, ElMessageBox, ElMessage } from "element-plus";
+import authApi from "@/api/amazon/auth/authApi.js";
+import authAdvApi from "@/api/amazon/advertisement/auth/authApi.js";
+import { dateFormat } from "@/utils/index";
+import AuthStore from "./authstore.vue";
+import AuthAdv from "./authadv.vue";
+import TaskData from "./taskData.vue";
+let props = defineProps({ storelist: [] });
+const { storelist } = toRefs(props);
+const imageFormat = function (country) {
+  return require("@/assets/image/country/" +
+      country.countrycode +
+      "-flag-small.jpg");
+};
+const authStoreRef = ref();
+const authAdvRef = ref();
+const taskDataRef = ref();
+let tableData = reactive({ list: [] });
+onMounted(() => {
+  loadauthData();
+});
+function showTaskDialog(row) {
+  taskDataRef.value.show(row);
+}
+function storeAdvAuth() {}
+function loadauthData() {
+  authApi.getBindSeller().then((res) => {
+    tableData.list = res.data;
+  });
+}
+function rowmerge({ row, column, rowIndex, columnIndex }) {
+  if (columnIndex === 0) {
+    if (rowIndex % 20 === 0) {
+      return [20, 1];
+    } else {
+      return [0, 0];
+    }
+  }
+}
+function storeAuth() {
+  authStoreRef.value.show();
+}
+function advAuth() {
+  authAdvRef.value.show();
+}
+function refreshAdv(id) {
+  authAdvApi.captureProfileById({ id: id }).then((res) => {
+    ElMessage({
+      type: "success",
+      message: "刷新成功！",
+    });
+  });
+}
+function disableAuth(id) {
+  ElMessageBox.confirm("是否解除绑定，解除后会造成店铺数据缺失！", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+    callback: (action) => {
+      if (action == "confirm") {
+        authAdvApi.disableAuth({ id: id }).then((res) => {
+          if (res.data && res.data.code == "success") {
+            ElMessage({
+              type: "success",
+              message: res.data.msg,
+            });
+          } else {
+            if (res.data && res.data.msg) {
+              ElMessage({
+                type: "error",
+                message: res.msg,
+              });
+            } else {
+              ElMessage({
+                type: "error",
+                message: "广告解除绑定操作失败，请联系管理员",
+              });
+            }
+          }
+          loadauthData();
+        });
+      }
+    },
+  });
+}
+function deleteByLogic(sellerid) {
+  ElMessageBox.confirm("是否解除绑定，解除后会造成店铺数据缺失！", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+    callback: (action) => {
+      if (action == "confirm") {
+        authApi.deleteByLogic({ sellerid: sellerid }).then((res) => {
+          if (res.data.indexOf("成功") >= 0) {
+            ElMessage({
+              type: "success",
+              message: res.data,
+            });
+          } else {
+            ElMessage({
+              type: "error",
+              message: res.data,
+            });
+          }
+          loadauthData();
+        });
+      }
+    },
+  });
+}
+
 </script>
 
 <style>

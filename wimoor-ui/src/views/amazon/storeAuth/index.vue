@@ -12,6 +12,7 @@
 								<el-space>
 					          <el-link type="danger"  title="新增" @click="addStorename" :underline="false">
 								  <plus theme="outline" size="24" :strokeWidth="5"/>
+
 								  </el-link>
 						     <el-link type="info" title="排序" size="small" linked @click="dialogRank.visible=true" :underline="false">
 								   <el-icon :size="20" color="#409EFC"><Sort /></el-icon>
@@ -46,54 +47,39 @@
 			</el-col>
 		</el-row>
 	</div>
-	 <el-dialog
-	    v-model="dialogVisible"
-	    :title=edittitle
-	    width="30%"
-		@close ="closedialog"
-	  >
-	   <el-input v-model="storename" placeholder="请输入店铺在系统上的名称!" class="input-with-select" />
-	    <template #footer>
-	      <span class="dialog-footer">
-	        <el-button @click="dialogVisible = false">取消</el-button>
-	        <el-button type="primary" @click="saveStore"  >确认</el-button >
-	      </span>
-	    </template>
-	  </el-dialog>
-	 <el-dialog
-	 	   v-model="dialogRank.visible"
-	 	   title="显示次序设置"
-	 	   width="400px"
-	 	 >
-	 	 <div class="rank-list-title">
-	 	 	<span>店铺名称</span>
-	 	 	<span>显示次序</span>
-	 	 	</div>	
-	 	 <draggable
-	 	     class="draggable"
-	 	    :list="state.list"
-	 	 	animation="300"
-	 	 	@start="dragStart"
-	 	 	@end="dragEnd"
-	 	   >
-	 	 	 <template #item="{ element }">
-	 	       <div class="item" >
-	 	         <el-card shadow="hover">
-	 	 			 <el-space class="list-title">
-	 	 			<drag class="ic-cen" theme="outline" size="16" fill="#9a9a9a" :strokeWidth="2"/>
-	 	 			<span>{{element.name}}
-	 	 			</span> 
-	 	 			</el-space>
-	 	 				<div class="font-extraSmall" style="float:right">{{element.findex}}</div>
-	 	 		  </el-card>
-	 	       </div>
-	 	 		 </template>
-	 	   </draggable>
-	 	 <template #footer>
-	 		 <el-button @click="dialogRank.visible=false">取消</el-button>
-	 		 <el-button type="primary" @click="submitFormIndex">确认</el-button>
-	 	 </template>
-	 	  </el-dialog> 
+  <el-dialog v-model="dialogVisible" :title=edittitle width="30%" @close="closedialog">
+    <el-input v-model="storename" placeholder="请输入店铺在系统上的名称!" class="input-with-select" />
+    <template #footer>
+	         <span class="dialog-footer">
+	             <el-button @click="dialogVisible = false">取消</el-button>
+	             <el-button type="primary" @click="saveStore">确认</el-button>
+	         </span>
+    </template>
+  </el-dialog>
+  <el-dialog v-model="dialogRank.visible" title="显示次序设置" width="400px">
+    <div class="rank-list-title">
+      <span>店铺名称</span>
+      <span>显示次序</span>
+    </div>
+    <draggable class="draggable" :list="state.list" animation="300" @start="dragStart" @end="dragEnd">
+      <template #item="{ element }">
+        <div class="item">
+          <el-card shadow="hover">
+            <el-space class="list-title">
+              <drag class="ic-cen" theme="outline" size="16" fill="#9a9a9a" :strokeWidth="2" />
+              <span>{{element.name}}
+                          </span>
+            </el-space>
+            <div class="font-extraSmall" style="float:right">{{element.findex}}</div>
+          </el-card>
+        </div>
+      </template>
+    </draggable>
+    <template #footer>
+      <el-button @click="dialogRank.visible=false">取消</el-button>
+      <el-button type="primary" @click="submitFormIndex">确认</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <script>

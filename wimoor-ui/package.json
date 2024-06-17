@@ -26,6 +26,7 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "babel-plugin-dynamic-import-node": "^2.3.3",
     "compression-webpack-plugin": "^1.1.12"
   },
   "browserslist": [

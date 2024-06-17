@@ -1,66 +1,76 @@
 <template>
-	  <el-container>
-	      <el-aside>
-			  <AsideMenu  ref="leftMenu"/>
-			  </el-aside>
-	      <el-container>
-	        <el-header>
-				<div class="top-nav">
-				<!-- <HeaderNavbtn/> -->
-				<HeaderTab ref="headerTab" @clear="clearCache"/>
-				<HeaderAvatar  @changeSKin="changeSKin"/>
-				</div>
-			</el-header>
-	        <el-main  style="flex: 1;height:100%">
-				  <router-view v-slot="{ Component }" >
-				      <keep-alive ref="keepAlive"  >
-				        <component :is="Component" v-if="$route.meta.keepAlive" :key="$route.query.title" />
-				      </keep-alive>
-				      <component :is="Component" v-if="!$route.meta.keepAlive" :key="$route.query.title"/>
-				  </router-view>
-				   <el-backtop :right="50" :bottom="50" />
-			</el-main>
-	      </el-container>
-	    </el-container>
+  <el-container>
+    <el-aside>
+      <AsideMenu ref="leftMenu" />
+    </el-aside>
+    <el-container>
+      <el-header>
+        <div class="top-nav">
+          <!-- <HeaderNavbtn/> -->
+          <HeaderTab ref="headerTab" @clear="clearCache" />
+          <HeaderAvatar @changeSKin="changeSKin" />
+        </div>
+      </el-header>
+      <el-main style="flex: 1;height:100%">
+        <router-view v-slot="{ Component }">
+          <keep-alive ref="keepAlive">
+            <component :is="Component" v-if="$route.meta.keepAlive" :key="$route.query.title" />
+          </keep-alive>
+          <component :is="Component" v-if="!$route.meta.keepAlive" :key="$route.query.title" />
+        </router-view>
+        <el-backtop :right="50" :bottom="50" />
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 <script setup>
-
 /* import HeaderNavbtn from "./components/Header/HeaderNavbtn"; */
- import { ref,reactive,onMounted ,inject,getCurrentInstance} from 'vue'
- import HeaderTab from "./components/Header/HeaderTab";
- import HeaderAvatar from "./components/Header/HeaderAvatar";
- import AsideMenu from "./components/Aside/AsideMenu";
- import { useRoute,useRouter } from 'vue-router'
- const emitter = inject("emitter"); // Inject `emitter`
- const headerTab=ref(HeaderTab);
- const keepAlive=ref();
- const leftMenu=ref();
- let router = useRouter();
- 
-function clearCache(activeName){
-			  removeCache(activeName);
-			 router.replace({ 'path':"/blank",
-									 'query':{"refresh":new Date(),"title":"blank"},
-							});
-			  setTimeout(function(){
-				  headerTab.value.showTab(activeName);
-			  },500)
-		}
-	
-function removeCache(activeName){
-		  keepAlive.value.$pruneCacheEntry(activeName);
-	}
-			
-function changeSKin(){
-				 leftMenu.value.goHome()
-				
-			}
-	  
-emitter.on("removeCache", (value) => { // 监听事件
-   removeCache(value);
-});
+import {
+  ref,
+  reactive,
+  onMounted,
+  inject,
+  getCurrentInstance
+} from 'vue'
+import HeaderTab from "./components/Header/HeaderTab";
+import HeaderAvatar from "./components/Header/HeaderAvatar";
+import AsideMenu from "./components/Aside/AsideMenu";
+import {
+  useRoute,
+  useRouter
+} from 'vue-router'
+const emitter = inject("emitter"); // Inject `emitter`
+const headerTab = ref(HeaderTab);
+const keepAlive = ref();
+const leftMenu = ref();
+let router = useRouter();
 
- 
+function clearCache(activeName) {
+  removeCache(activeName);
+  router.replace({
+    'path': "/blank",
+    'query': {
+      "refresh": new Date(),
+      "title": "blank"
+    },
+  });
+  setTimeout(function() {
+    headerTab.value.showTab(activeName);
+  }, 500)
+}
+
+function removeCache(activeName) {
+  keepAlive.value.$pruneCacheEntry(activeName);
+}
+
+function changeSKin() {
+  leftMenu.value.goHome()
+
+}
+
+emitter.on("removeCache", (value) => { // 监听事件
+  removeCache(value);
+});
 </script>
 <style>
 .el-header{height:34px!important;

@@ -184,12 +184,14 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      */
 
     @Override
-    @Cacheable(cacheNames = "system", key = "#user.id")
+    //@Cacheable(cacheNames = "system", key = "#user.id")
     public List<RouteVO> listRoute(UserInfo user) {
         List<SysUserRole> roleList = iSysUserRoleService.findByUserId(user.getId());
         List<SysMenu> menuList = null;
         boolean isadmin=user.getUsertype().equals(UserType.admin.getCode());
         boolean ismanager=user.getUsertype().equals(UserType.manager.getCode());
+
+
         if(isadmin) {
         	menuList = this.baseMapper.listRouteAll();
         }else if(ismanager){
@@ -253,6 +255,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                     if (CollectionUtil.isNotEmpty(children)) {
                         routeVO.setAlwaysShow(Boolean.TRUE);
                     }
+                    // 平台
+                    routeVO.setPlatform(menu.getPlatform());
                     list.add(routeVO);
                 }));
         

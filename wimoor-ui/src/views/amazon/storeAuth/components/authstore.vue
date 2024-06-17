@@ -1,92 +1,80 @@
 <template>
-	<el-dialog
-		   v-model="authVisible"
-		   title="店铺授权"
-		   width="600px"
-		 >
-		  <el-alert  v-if="authtype=='manuAuthority'&&!formInline.isdeveloper"  title="请确保当前的电脑和IP是您要授权店铺的常用环境，以免店铺关联!" type="error" show-icon />
-		  <el-alert  v-if="authtype=='amazonAuthority'&&!formInline.isdeveloper"  title="检测到你正在绑定授权,请选择当前要绑定的店铺!" type="error" show-icon />
-		  <el-form :inline="true" :model="formInline" class="form-width-fill" label-width="auto">
-		     <el-form-item label="店铺名称"   >
-		       <el-select v-model="formInline.groupid" placeholder="请选择..." @change="selectStote">
-		         <el-option v-for="(item,index) in storelist.list" :label="item.name" :value="item.id" />
-		       </el-select>
-		     </el-form-item>
-			 <el-form-item  v-if="authtype=='manuAuthority' && !formInline.isdeveloper" label="站点"  >
-			   <el-select v-model="formInline.marketplaceid" placeholder="同区域站点绑定一个,该区域所有站点都会绑定!" @change="selectCountry">
-			     <el-option  v-for="(item,index) in market" :label="item.name" v-show="item.name !=='中国'" :value="item.marketplaceid" >
-				 {{item.name}}<span class="font-extraSmall"> - {{item.regionName}}</span>
-				 </el-option> 
-			   </el-select>
-			 </el-form-item>
-			 <el-form-item  v-if="authtype=='amazonAuthority' || formInline.isdeveloper" label="站点" >
-			   <el-select v-model="formInline.awsRegion" placeholder="同区域站点绑定一个,该区域所有站点都会绑定!" @change="selectCountry">
-			          <el-option   label="北美"  value="us-east-1" ></el-option>
-					  <el-option   label="欧洲"  value="eu-west-1" ></el-option>
-					  <el-option   label="远东"  value="us-west-2" ></el-option>
-			   </el-select>
-			 </el-form-item>
-			  <el-form-item  label="类型" >
-				 <el-switch
-					 v-model="formInline.isdeveloper"
-					 class="ml-2"
-					 :width="60"
-					 style="--el-switch-on-color: #ff4949; --el-switch-off-color:  #13ce66"
-					 inline-prompt
-					 active-text="高级"
-					 inactive-text="常规"
-				   />
-				</el-form-item>
-				<el-form-item  v-if="!formInline.isdeveloper" label="授权链接" >
-				 	        <el-button @click="handleChange" v-if="formInline.showurl==false" size="small" type="primary">查看</el-button>
-							<el-alert v-if="formInline.showurl"  type="warning" @close="formInline.showurl=false"  class="mar-bot">
-										  <template #default>
-											 {{url}}
-										  </template>  
-							</el-alert>
-							<div v-if="formInline.showurl" style="margin-top:5px">
-								<el-button   type="primary" link  @click.stop="CopyText(url)">复制</el-button>
-								<div class="font-extraSmall"  >若无法在店铺所在网络登录本网站，可以复制此链接授权</div>
-							</div>
-							
-							 
-				</el-form-item>    
-				<el-form-item  v-if="formInline.isdeveloper" label="Seller Id" >
-				 	 <el-input v-model="formInline.sellerid"></el-input>
-				</el-form-item>    
-				<el-form-item  v-if="formInline.isdeveloper" label="Access Key" >
-					 <el-input v-model="formInline.accessKeyId"></el-input>
-				</el-form-item>   
-				<el-form-item  v-if="formInline.isdeveloper" label="Secret Key" >
-					 <el-input v-model="formInline.secretKey"></el-input>
-				</el-form-item> 
-				<el-form-item  v-if="formInline.isdeveloper" label="Role Arn" >
-					 <el-input v-model="formInline.roleArn"></el-input>
-				</el-form-item> 
-				<el-form-item  v-if="formInline.isdeveloper" label="Client Id" >
-					 <el-input v-model="formInline.clientId"></el-input>
-				</el-form-item> 
-				<el-form-item  v-if="formInline.isdeveloper" label="Client Secret" >
-					 <el-input v-model="formInline.clientSecret"></el-input>
-				</el-form-item> 
-				<el-form-item  v-if="formInline.isdeveloper" label="Refresh Token" >
-					 <el-input v-model="formInline.refreshToken"></el-input>
-				</el-form-item> 
-		   </el-form>
-		   <template #footer>
-		     <span class="dialog-footer">
-			    <div   v-if="formInline.isdeveloper" >
-				       <el-button @click="authVisible = false">取消</el-button>
-				       <el-button  type="primary" @click="submitDeveloperAuth"  >确认</el-button>
-			    </div>
-				 <div v-else>
-					 <el-button @click="authVisible = false">取消</el-button>
-					 <el-button v-if="authtype=='manuAuthority'" type="primary" @click="getamazonUrl"  >登录亚马逊授权</el-button >
-					 <el-button v-if="authtype=='amazonAuthority'" type="primary" @click="subMitAuth"  >确认绑定</el-button >
-				 </div>
-		     </span>
-		   </template>
-		 </el-dialog>
+  <el-dialog v-model="authVisible" title="店铺授权" width="600px">
+    <el-alert v-if="authtype=='manuAuthority'&&!formInline.isdeveloper" title="请确保当前的电脑和IP是您要授权店铺的常用环境，以免店铺关联!" type="error" show-icon />
+    <el-alert v-if="authtype=='amazonAuthority'&&!formInline.isdeveloper" title="检测到你正在绑定授权,请选择当前要绑定的店铺!" type="error" show-icon />
+    <el-form :inline="true" :model="formInline" class="form-width-fill" label-width="auto">
+      <el-form-item label="店铺名称">
+        <el-select v-model="formInline.groupid" placeholder="请选择..." @change="selectStote">
+          <el-option v-for="(item,index) in storelist.list" :label="item.name" :value="item.id" />
+        </el-select>
+      </el-form-item>
+      <el-form-item v-if="authtype=='manuAuthority' && !formInline.isdeveloper" label="站点">
+        <el-select v-model="formInline.marketplaceid" placeholder="同区域站点绑定一个,该区域所有站点都会绑定!" @change="selectCountry">
+          <el-option v-for="(item,index) in market" :label="item.name" v-show="item.name !=='中国'" :value="item.marketplaceid">
+            {{item.name}}<span class="font-extraSmall"> - {{item.regionName}}</span>
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item v-if="authtype=='amazonAuthority' || formInline.isdeveloper" label="站点">
+        <el-select v-model="formInline.awsRegion" placeholder="同区域站点绑定一个,该区域所有站点都会绑定!" @change="selectCountry">
+          <el-option label="北美" value="us-east-1"></el-option>
+          <el-option label="欧洲" value="eu-west-1"></el-option>
+          <el-option label="远东" value="us-west-2"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="类型">
+        <el-switch v-model="formInline.isdeveloper" class="ml-2" :width="60" style="--el-switch-on-color: #ff4949; --el-switch-off-color:  #13ce66" inline-prompt active-text="高级" inactive-text="常规" />
+      </el-form-item>
+      <el-form-item v-if="!formInline.isdeveloper" label="授权链接">
+        <el-button @click="handleChange" v-if="formInline.showurl==false" size="small" type="primary">查看</el-button>
+        <el-alert v-if="formInline.showurl" type="warning" @close="formInline.showurl=false" class="mar-bot">
+          <template #default>
+            {{url}}
+          </template>
+        </el-alert>
+        <div v-if="formInline.showurl" style="margin-top:5px">
+          <el-button type="primary" link @click.stop="CopyText(url)">复制</el-button>
+          <div class="font-extraSmall">若无法在店铺所在网络登录本网站，可以复制此链接授权</div>
+        </div>
+
+
+      </el-form-item>
+      <el-form-item v-if="formInline.isdeveloper" label="Seller Id">
+        <el-input v-model="formInline.sellerid"></el-input>
+      </el-form-item>
+      <el-form-item v-if="formInline.isdeveloper" label="Access Key">
+        <el-input v-model="formInline.accessKeyId"></el-input>
+      </el-form-item>
+      <el-form-item v-if="formInline.isdeveloper" label="Secret Key">
+        <el-input v-model="formInline.secretKey"></el-input>
+      </el-form-item>
+      <el-form-item v-if="formInline.isdeveloper" label="Role Arn">
+        <el-input v-model="formInline.roleArn"></el-input>
+      </el-form-item>
+      <el-form-item v-if="formInline.isdeveloper" label="Client Id">
+        <el-input v-model="formInline.clientId"></el-input>
+      </el-form-item>
+      <el-form-item v-if="formInline.isdeveloper" label="Client Secret">
+        <el-input v-model="formInline.clientSecret"></el-input>
+      </el-form-item>
+      <el-form-item v-if="formInline.isdeveloper" label="Refresh Token">
+        <el-input v-model="formInline.refreshToken"></el-input>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+            <span class="dialog-footer">
+                <div v-if="formInline.isdeveloper">
+                    <el-button @click="authVisible = false">取消</el-button>
+                    <el-button type="primary" @click="submitDeveloperAuth">确认</el-button>
+                </div>
+                <div v-else>
+                    <el-button @click="authVisible = false">取消</el-button>
+                    <el-button v-if="authtype=='manuAuthority'" type="primary" @click="getamazonUrl">登录亚马逊授权</el-button>
+                    <el-button v-if="authtype=='amazonAuthority'" type="primary" @click="subMitAuth">确认绑定</el-button>
+                </div>
+            </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup>

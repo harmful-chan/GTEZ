@@ -30,212 +30,248 @@
   </div>
 </template>
 <script>
-import { useRoute,useRouter } from 'vue-router'
-import { defineComponent,ref,reactive,watch,onMounted,inject ,getCurrentInstance,nextTick} from 'vue'
-import {ArrowDown,Refresh} from '@element-plus/icons-vue'
+import {
+  useRoute,
+  useRouter
+} from 'vue-router'
+import {
+  defineComponent,
+  ref,
+  reactive,
+  watch,
+  onMounted,
+  inject,
+  getCurrentInstance,
+  nextTick
+} from 'vue'
+import {
+  ArrowDown,
+  Refresh
+} from '@element-plus/icons-vue'
 
 export default defineComponent({
-	 components:{ArrowDown,Refresh},
-     setup(prop,context){
-		 const emitter = inject("emitter"); // Inject `emitter`
-         let editableTabsValue =ref('/home')
-         let editableTabs =ref([
-             {
-                 title: '首页',
-                 name: '/home',
-				 path: '/home',
-                 closable:false,
-				 meta:{ keepAlive: true }
-             },
-         ]);
-         let route = useRoute()
-         let router = useRouter()
-		  router.beforeEach((to,from)=>{
-			    var indexm=-1;
-			   editableTabs.value.forEach((item,index)=>{
-					 if(item.name==route.query.title){
-						item.scrolltop=window.pageYOffset;
-					 }
-			   })
-		  });
-         router.afterEach((to,from)=>{
-             //如果to.path该页签存在于当前数组中---就执行激活当前页签---否则就新增加页签
-             let newarr =[]
-			 let oldname=editableTabsValue.value;
-			 let indexm=-1;
-			 
-			 if(to.path=="/blank"){
-				 return;
-			 }
-             editableTabs.value.forEach((item,index)=>{
-				 if(item.name==route.query.title){
-					 indexm=index;
-				 }
-             })
-			 let replace=false;
-			 if(route.query.replace){
-			 	  replace=route.query.replace==true||route.query.replace=="true"?true:false;
-			 }
-            if(indexm>-1){
-				if(route.query.path=="/home"){
-					editableTabsValue.value='/home';
-					emitter.emit("openTab", to.path);
-					nextTick(() => {document.documentElement.scrollTop=0;});
-				}else{
-					let tab=JSON.parse(JSON.stringify(route.query));
-					editableTabsValue.value =route.query.title;
-					emitter.emit("openTab", to.path);
-					tab.title=route.query.title;
-					tab.name=route.query.title;
-					tab.meta=route.meta;
-					var tabquery=editableTabs.value[indexm] ;
-						delete tabquery.refresh;
-					    delete tabquery.replace;
-						delete tab.refresh;
-					    delete tab.replace;
-					var scrolltop=tabquery.scrolltop;
-					    delete tabquery.scrolltop;
-						if(scrolltop>0){
-							 nextTick(() => {document.documentElement.scrollTop=scrolltop;});
-						}else{
-							 nextTick(() => {document.documentElement.scrollTop=0;});
-						}
-					   editableTabs.value[indexm]=Object.assign(tabquery, tab);
-				}
-            }else{
-                addTab();
-				emitter.emit("openTab", to.path);
-				nextTick(() => {document.documentElement.scrollTop=0;});
-            }
-			if(replace&&oldname!="/home"&&to.path!=from.path){
-				 removeTab(oldname);
-				 emitter.emit("openTab", to.path);
-			}
-         })
-		 onMounted(()=>{
-			 if(route.query.title){
-				 addTab()
-			 }
-		 })
-		 
-		 function closeOther(){
-			 closeRight();
-			 closeLeft();
-		 }
-		 function handleRefresh(){
-			  let activeName = editableTabsValue.value;
-			  context.emit("clear",activeName);
-		 }
-		 function closeRight(){
-			 let tabs = editableTabs.value
-			 let activeName = editableTabsValue.value
-			 let activeIndex=0;
-			     tabs.forEach((tab, index)=>{
-			         if (tab.name === activeName) {
-			              activeIndex=index;
-			         }
-			     });
-			  if(activeIndex+1<tabs.length){
-				  editableTabs.value =tabs.slice(0,activeIndex+1);
-			  }
-			  
-		 }
-		 function closeLeft(){
-			 let tabs = editableTabs.value
-			 let activeName = editableTabsValue.value
-			 let activeIndex=0;
-			     tabs.forEach((tab, index)=>{
-			         if (tab.name === activeName) {
-			              activeIndex=index;
-			         }
-			     });
-			  if(activeIndex>1){
-				   let mytabs=[tabs[0]];
-				   tabs.slice(activeIndex,tabs.length).forEach((item)=>{
-					   mytabs.push(item);
-				   })
-			 	   editableTabs.value =mytabs; 
-			  }
-		 }
-         function pushShow(target) {
-			 showTab(target.props.name)
-         }
-		 
+  components: {
+    ArrowDown,
+    Refresh
+  },
+  setup(prop, context) {
+    const emitter = inject("emitter"); // Inject `emitter`
+    let editableTabsValue = ref('/home')
+    let editableTabs = ref([{
+      title: '首页',
+      name: '/home',
+      path: '/home',
+      closable: false,
+      meta: {
+        keepAlive: true
+      }
+    }, ]);
+    let route = useRoute()
+    let router = useRouter()
+    router.beforeEach((to, from) => {
+      var indexm = -1;
+      editableTabs.value.forEach((item, index) => {
+        if (item.name == route.query.title) {
+          item.scrolltop = window.pageYOffset;
+        }
+      })
+    });
+    router.afterEach((to, from) => {
+      //如果to.path该页签存在于当前数组中---就执行激活当前页签---否则就新增加页签
+      let newarr = []
+      let oldname = editableTabsValue.value;
+      let indexm = -1;
 
-		 emitter.on("removeTab", (value) => { // 监听事件
-		    removeTab(editableTabsValue.value);
-		 });
-		 function showTab(activeName,refresh){
-			 let tabs = editableTabs.value;
-			 let query=null;
-			 if(tabs){
-				 query=tabs[0];
-			 }
-			 tabs.forEach((tab, index)=>{
-			     if (tab.name === activeName) {
-			          query=tab;
-			     }
-			 });
-			 query=JSON.parse(JSON.stringify(query));
-			 delete query.refresh;
-			 delete query.replace;
-			 delete query.meta;
-			 delete query.name;
-			 var meta=query.meta;
-			 router.push({
-						 //删除自己时路由切换到隔壁
-						'path':query.path,
-						'query':query,
-						'meta':meta,
-					 })
-		 }
-	 
-         function addTab(){
-			 let tab=JSON.parse(JSON.stringify(route.query));
-			 if(route.query.path=="/home"){
-				 return;
-			 }
-			 tab.title=route.query.title;
-			 tab.name=route.query.title;
-			 tab.closable=true;
-			 tab.meta=route.meta;
-			 if(tab.refresh){
-				delete tab.refresh;
-			 }
-			 if(tab.replace){
-			    delete tab.replace;
-			 }
-             editableTabs.value.push(tab)
-             editableTabsValue.value = route.query.title;
-         }
-         function removeTab(targetName){
-             let tabs = editableTabs.value
-             let activeName = editableTabsValue.value
-             if(activeName === targetName){
-                 tabs.forEach((tab, index)=>{
-                     if (tab.name === targetName) {
-                         const nextTab = tabs[index + 1] || tabs[index - 1]
-                         if (nextTab) {
-                             activeName = nextTab.name
-                         }
-                     }
-                 });
-				editableTabsValue.value = activeName
-				showTab(activeName);
-				editableTabs.value =tabs.filter((tab) => tab.name !== targetName)
-             }else{
-				editableTabsValue.value = activeName;
-				editableTabs.value =tabs.filter((tab) => tab.name !== targetName)
-			 }
-         }
-         return{
-             pushShow,
-             removeTab,
-             editableTabsValue,showTab,
-             editableTabs,handleRefresh,
-			 closeOther,closeLeft,closeRight
-         }
-     },
+      if (to.path == "/blank") {
+        return;
+      }
+      editableTabs.value.forEach((item, index) => {
+        if (item.name == route.query.title) {
+          indexm = index;
+        }
+      })
+      let replace = false;
+      if (route.query.replace) {
+        replace = route.query.replace == true || route.query.replace == "true" ? true : false;
+      }
+      if (indexm > -1) {
+        if (route.query.path == "/home") {
+          editableTabsValue.value = '/home';
+          emitter.emit("openTab", to.path);
+          nextTick(() => {
+            document.documentElement.scrollTop = 0;
+          });
+        } else {
+          let tab = JSON.parse(JSON.stringify(route.query));
+          editableTabsValue.value = route.query.title;
+          emitter.emit("openTab", to.path);
+          tab.title = route.query.title;
+          tab.name = route.query.title;
+          tab.meta = route.meta;
+          var tabquery = editableTabs.value[indexm];
+          delete tabquery.refresh;
+          delete tabquery.replace;
+          delete tab.refresh;
+          delete tab.replace;
+          var scrolltop = tabquery.scrolltop;
+          delete tabquery.scrolltop;
+          if (scrolltop > 0) {
+            nextTick(() => {
+              document.documentElement.scrollTop = scrolltop;
+            });
+          } else {
+            nextTick(() => {
+              document.documentElement.scrollTop = 0;
+            });
+          }
+          editableTabs.value[indexm] = Object.assign(tabquery, tab);
+        }
+      } else {
+        addTab();
+        emitter.emit("openTab", to.path);
+        nextTick(() => {
+          document.documentElement.scrollTop = 0;
+        });
+      }
+      if (replace && oldname != "/home" && to.path != from.path) {
+        removeTab(oldname);
+        emitter.emit("openTab", to.path);
+      }
+    })
+    onMounted(() => {
+      if (route.query.title) {
+        addTab()
+      }
+    })
+
+    function closeOther() {
+      closeRight();
+      closeLeft();
+    }
+
+    function handleRefresh() {
+      let activeName = editableTabsValue.value;
+      context.emit("clear", activeName);
+    }
+
+    function closeRight() {
+      let tabs = editableTabs.value
+      let activeName = editableTabsValue.value
+      let activeIndex = 0;
+      tabs.forEach((tab, index) => {
+        if (tab.name === activeName) {
+          activeIndex = index;
+        }
+      });
+      if (activeIndex + 1 < tabs.length) {
+        editableTabs.value = tabs.slice(0, activeIndex + 1);
+      }
+
+    }
+
+    function closeLeft() {
+      let tabs = editableTabs.value
+      let activeName = editableTabsValue.value
+      let activeIndex = 0;
+      tabs.forEach((tab, index) => {
+        if (tab.name === activeName) {
+          activeIndex = index;
+        }
+      });
+      if (activeIndex > 1) {
+        let mytabs = [tabs[0]];
+        tabs.slice(activeIndex, tabs.length).forEach((item) => {
+          mytabs.push(item);
+        })
+        editableTabs.value = mytabs;
+      }
+    }
+
+    function pushShow(target) {
+      showTab(target.props.name)
+    }
+
+
+    emitter.on("removeTab", (value) => { // 监听事件
+      removeTab(editableTabsValue.value);
+    });
+
+    function showTab(activeName, refresh) {
+      let tabs = editableTabs.value;
+      let query = null;
+      if (tabs) {
+        query = tabs[0];
+      }
+      tabs.forEach((tab, index) => {
+        if (tab.name === activeName) {
+          query = tab;
+        }
+      });
+      query = JSON.parse(JSON.stringify(query));
+      delete query.refresh;
+      delete query.replace;
+      delete query.meta;
+      delete query.name;
+      var meta = query.meta;
+      router.push({
+        //删除自己时路由切换到隔壁
+        'path': query.path,
+        'query': query,
+        'meta': meta,
+      })
+    }
+
+    function addTab() {
+      let tab = JSON.parse(JSON.stringify(route.query));
+      if (route.query.path == "/home") {
+        return;
+      }
+      tab.title = route.query.title;
+      tab.name = route.query.title;
+      tab.closable = true;
+      tab.meta = route.meta;
+      if (tab.refresh) {
+        delete tab.refresh;
+      }
+      if (tab.replace) {
+        delete tab.replace;
+      }
+      editableTabs.value.push(tab)
+      editableTabsValue.value = route.query.title;
+    }
+
+    function removeTab(targetName) {
+      let tabs = editableTabs.value
+      let activeName = editableTabsValue.value
+      if (activeName === targetName) {
+        tabs.forEach((tab, index) => {
+          if (tab.name === targetName) {
+            const nextTab = tabs[index + 1] || tabs[index - 1]
+            if (nextTab) {
+              activeName = nextTab.name
+            }
+          }
+        });
+        editableTabsValue.value = activeName
+        showTab(activeName);
+        editableTabs.value = tabs.filter((tab) => tab.name !== targetName)
+      } else {
+        editableTabsValue.value = activeName;
+        editableTabs.value = tabs.filter((tab) => tab.name !== targetName)
+      }
+    }
+    return {
+      pushShow,
+      removeTab,
+      editableTabsValue,
+      showTab,
+      editableTabs,
+      handleRefresh,
+      closeOther,
+      closeLeft,
+      closeRight
+    }
+  },
 })
 </script>
  <style >

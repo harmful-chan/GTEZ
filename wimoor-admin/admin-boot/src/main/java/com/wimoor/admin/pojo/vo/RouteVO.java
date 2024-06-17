@@ -37,6 +37,8 @@ public class RouteVO  implements Serializable{
     
     private Integer sort;
 
+    private String platform;
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
